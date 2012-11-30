@@ -265,7 +265,7 @@ public class RfidContainer extends Activity implements FRAG_Tag.OnTagSelectedLis
 				if(DEBUG) Toast.makeText(context, "USB Detached", Toast.LENGTH_SHORT).show();
 				mUsbCommunication.setUsbInterface(null, null);
 				setUsbState(false);
-				getReaderSn(false);
+//				getReaderSn(false);
 				
 			} else if(ACTION_USB_PERMISSION.equals(action)) {
 				if(DEBUG) Toast.makeText(context, "USB Permission", Toast.LENGTH_SHORT).show();

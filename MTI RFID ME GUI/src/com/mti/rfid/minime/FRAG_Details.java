@@ -8,7 +8,10 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.GetChars;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -29,6 +32,8 @@ public class FRAG_Details extends Fragment implements OnFocusChangeListener {
 	private EditText mEpcNew;
 	private Spinner mPwdType;
 	private EditText mPwdNew;
+	private EditText mTidData;
+	private EditText mUserData;
 	private Spinner mLockMemSpace;
 	private Spinner mLockAction;
 	private Spinner mNxpCmd;
@@ -90,6 +95,9 @@ public class FRAG_Details extends Fragment implements OnFocusChangeListener {
 		
 		mPwdType = (Spinner)mView.findViewById(R.id.sp_pwdtype);
 		mPwdNew = (EditText)mView.findViewById(R.id.et_pwdnew);
+		
+		mTidData = (EditText)mView.findViewById(R.id.et_tiddata);
+		mUserData = (EditText)mView.findViewById(R.id.et_userdata);
 		
 		mLockMemSpace = (Spinner)mView.findViewById(R.id.sp_lockmemory);
 		mLockAction = (Spinner)mView.findViewById(R.id.sp_lockaction);
@@ -157,6 +165,38 @@ public class FRAG_Details extends Fragment implements OnFocusChangeListener {
 			@Override
 			public void onClick(View v) {
 		    	openPwdDialog(R.id.btn_lock);
+			}
+		});
+		
+		final Button btnTidRead = (Button) mView.findViewById(R.id.btn_tid_read);
+		btnTidRead.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	openPwdDialog(R.id.btn_tid_read);
+			}
+		});
+		
+		final Button btnTidWrite = (Button) mView.findViewById(R.id.btn_tid_write);
+		btnTidWrite.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	openPwdDialog(R.id.btn_tid_write);
+			}
+		});
+		
+		final Button btnUserRead = (Button) mView.findViewById(R.id.btn_user_read);
+		btnUserRead.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	openPwdDialog(R.id.btn_user_read);
+			}
+		});
+		
+		final Button btnUserWrite = (Button) mView.findViewById(R.id.btn_user_write);
+		btnUserWrite.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+		    	openPwdDialog(R.id.btn_user_write);
 			}
 		});
 		
@@ -256,6 +296,18 @@ public class FRAG_Details extends Fragment implements OnFocusChangeListener {
 	                		break;
 	                	case R.id.btn_pwd:
 	                		setNewPwd(longPwd);
+	                		break;
+	                	case R.id.btn_tid_read:
+	                		tidRead(longPwd);
+	                		break;
+	                	case R.id.btn_tid_write:
+	                		tidWrite(longPwd);
+	                		break;
+	                	case R.id.btn_user_read:
+	                		userRead(longPwd);
+	                		break;
+	                	case R.id.btn_user_write:
+	                		userWrite(longPwd);
 	                		break;
 	                	case R.id.btn_lock:
 	                		lockTag(longPwd);
@@ -390,7 +442,83 @@ public class FRAG_Details extends Fragment implements OnFocusChangeListener {
 		}
 		return 0;
 	}
+
 	
+	private byte tidRead(Long pwd) {
+		mMtiCmd = new CMD_Iso18k6cTagAccess.RFID_18K6CTagRead(mUsbCommunication);
+		CMD_Iso18k6cTagAccess.RFID_18K6CTagRead finalCmd = (CMD_Iso18k6cTagAccess.RFID_18K6CTagRead) mMtiCmd;
+		
+		int dataLength = Integer.parseInt((mSharedpref.getString("cfg_tid_length", "1")));
+		if(finalCmd.setCmd(CMD_Iso18k6cTagAccess.MemoryBank.TID, (byte)0x00, pwd, (byte)dataLength)) {
+			Toast.makeText(getActivity(), "Read TID", Toast.LENGTH_SHORT).show();
+			mTidData.setText(finalCmd.responseData(dataLength));
+		} else {
+    		openOptionsDialog(getString(R.string.dlg_read_tid_title),
+	    		finalCmd.getStatus(),
+	    		getResources().getString(android.R.string.ok));
+		}
+		
+		return 0;
+	}
+	
+	
+	private byte tidWrite(Long pwd) {
+		mMtiCmd = new CMD_Iso18k6cTagAccess.RFID_18K6CTagWrite(mUsbCommunication);
+		CMD_Iso18k6cTagAccess.RFID_18K6CTagWrite finalCmd = (CMD_Iso18k6cTagAccess.RFID_18K6CTagWrite) mMtiCmd;
+
+		String strData = mTidData.getText().toString().replace(" ", "");
+		int intData = strData.length() % 4;
+		for(int i = 4; intData != 0 && i > intData; i--)
+			strData += "0";
+
+		if(finalCmd.setCmd(CMD_Iso18k6cTagAccess.MemoryBank.TID, (byte)0x00, pwd, finalCmd.byteCmd(strData))) {
+			Toast.makeText(getActivity(), "Write TID", Toast.LENGTH_SHORT).show();
+		} else {
+    		openOptionsDialog(getString(R.string.dlg_write_tid_title),
+	    		finalCmd.getStatus(),
+	    		getResources().getString(android.R.string.ok));
+		}
+		return 0;
+	}
+
+	
+	private byte userRead(Long pwd) {
+		mMtiCmd = new CMD_Iso18k6cTagAccess.RFID_18K6CTagRead(mUsbCommunication);
+		CMD_Iso18k6cTagAccess.RFID_18K6CTagRead finalCmd = (CMD_Iso18k6cTagAccess.RFID_18K6CTagRead) mMtiCmd;
+		
+		int dataLength = Integer.parseInt((mSharedpref.getString("cfg_user_length", "1")));
+		if(finalCmd.setCmd(CMD_Iso18k6cTagAccess.MemoryBank.User, (byte)0x00, pwd, (byte)dataLength)) {
+			Toast.makeText(getActivity(), "Read User Memory", Toast.LENGTH_SHORT).show();
+			mUserData.setText(finalCmd.responseData(dataLength));
+		} else {
+    		openOptionsDialog(getString(R.string.dlg_read_user_title),
+	    		finalCmd.getStatus(),
+	    		getResources().getString(android.R.string.ok));
+		}
+		
+		return 0;
+	}
+	
+	
+	private byte userWrite(Long pwd) {
+		mMtiCmd = new CMD_Iso18k6cTagAccess.RFID_18K6CTagWrite(mUsbCommunication);
+		CMD_Iso18k6cTagAccess.RFID_18K6CTagWrite finalCmd = (CMD_Iso18k6cTagAccess.RFID_18K6CTagWrite) mMtiCmd;
+
+		String strData = mUserData.getText().toString().replace(" ", "");
+		int intData = strData.length() % 4;
+		for(int i = 4; intData != 0 && i > intData; i--)
+			strData += "0";
+
+		if(finalCmd.setCmd(CMD_Iso18k6cTagAccess.MemoryBank.User, (byte)0x00, pwd, finalCmd.byteCmd(strData))) {
+			Toast.makeText(getActivity(), "Write User Memory", Toast.LENGTH_SHORT).show();
+		} else {
+    		openOptionsDialog(getString(R.string.dlg_write_user_title),
+	    		finalCmd.getStatus(),
+	    		getResources().getString(android.R.string.ok));
+		}
+		return 0;
+	}
+
 	
 	private byte killTag(Long pwd) {
 		mMtiCmd = new CMD_Iso18k6cTagAccess.RFID_18K6CTagKill(mUsbCommunication);

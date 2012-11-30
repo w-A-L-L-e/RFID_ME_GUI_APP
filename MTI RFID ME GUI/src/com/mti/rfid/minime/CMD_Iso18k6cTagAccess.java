@@ -378,7 +378,7 @@ public class CMD_Iso18k6cTagAccess {
 			mCmdHead = CmdHead.RFID_18K6CTagRead;
 		}
 
-		public boolean setCmd(MemoryBank memoryBank, byte memoryAddress, int accessPassword, byte tagDataLength) {
+		public boolean setCmd(MemoryBank memoryBank, byte memoryAddress, long accessPassword, byte tagDataLength) {
 			mParam.add(memoryBank.bMemoryBank);
 			mParam.add(memoryAddress);
 			for(int i = 3; i >= 0; i--)

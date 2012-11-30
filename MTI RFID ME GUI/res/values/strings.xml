@@ -59,13 +59,29 @@
     <string name="about_web">Web Site</string>
     <string name="about_web_sum">http://www.mti.com.tw</string>
     <string name="about_sw_ver">Software Version</string>
-    <string name="about_sw_ver_sum">1.4.1</string>
+    <string name="about_sw_ver_sum">1.5.0</string>
     <string name="cfg_inventory_times">Scan Times</string>
     <string name="nxp_trigger">Trigger</string>
     <string name="cfg_misc">Miscellaneous</string>
     <string name="cfg_web_url">Web Url</string>
     <string name="cfg_sleep_mode">Sleep Mode</string>
     <string name="cfg_sleep_mode_sum">To save more battery, but operation time will be longer</string><string name="about_reader_sn">Reader S/N</string>
+    <string name="tid_title">TID</string>
+    <string name="tid_read_submit">Read</string>
+    <string name="tid_write_submit">Write</string>
+    <string name="tid_data">Data</string><string name="user_title">User</string><string name="user_read_submit">Read</string>
+    <string name="user_write_submit">Write</string>
+    
+    <string name="user_data">Data</string>
+    
+    <string name="epc_length_hint">Enter EPC length between 1 to 27</string>
+    <string name="cfg_tag_mem">Tag Memory Configuration</string>
+    <string name="cfg_tid_length">TID Memory Length</string>
+    <string name="cfg_user_length">User Memory Length</string>
+    <string name="dlg_read_tid_title">Read TID Memory Bank Error</string>
+    <string name="dlg_write_tid_title">Write TID Memory Bank Error</string>
+    <string name="dlg_read_user_title">Read User Memory Bank Error</string>
+    <string name="dlg_write_user_title">Write User Memory Bank Error</string>
     
     
     

@@ -116,6 +116,17 @@ public abstract class MtiCmd {
 		return mResponse;
 	}
 	
+	public String responseData(int length) {
+		String hexResult = "";
+
+		for (int i = 0; i < length * 2; i++) {
+			hexResult += ((mResponse[i + 4] < 0 || mResponse[i + 4] > 15)
+						? Integer.toHexString(0xff & (int)mResponse[i + 4])
+						: "0" + Integer.toHexString(0xff & (int)mResponse[i + 4]))
+						+ (( i % 2 == 1) ? " " : "");
+		}
+		return hexResult.toUpperCase();
+	}
 	
 	public String getStatus() {
 		switch(mStatus) {

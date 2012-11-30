@@ -40,9 +40,11 @@ public class FRAG_Config extends PreferenceFragment{
 		initListPreference("cfg_session");
 		initListPreference("cfg_coding");
 		initEditTextPreference("cfg_q_begin");
+		initEditTextPreference("cfg_tid_length");
+		initEditTextPreference("cfg_user_length");
+		initCheckBoxPreference("cfg_sleep_mode");
 		initEditTextPreference("cfg_inventory_times");
 		initEditTextPreference("cfg_web_url");
-		initCheckBoxPreference("cfg_sleep_mode");
 		
 		if(savedInstanceState == null) {
         	if(getUsbState()){

@@ -11,6 +11,7 @@ Here includes the document as below.
 
 2. The .apk file of MTI RFID ME GUI APP
 	- MTI RFID ME GUI_v1.4.1.apk
+	- MTI RFID ME GUI_v1.5.0.apk
 
 3. The source code of MTI RFID ME GUI (for Android 3.7 or 4.0.1 above)
 	- under folder \MTI RFID ME GUI_v1.4.1

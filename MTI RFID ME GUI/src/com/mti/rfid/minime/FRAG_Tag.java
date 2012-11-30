@@ -11,6 +11,8 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -39,7 +41,7 @@ public class FRAG_Tag extends ListFragment implements OnItemLongClickListener {
 	OnTagSelectedListener mListener;
 	
 	private boolean isPhone = false;
-
+	
 	public static FRAG_Tag newInstance() {
 		FRAG_Tag f = new FRAG_Tag();
 		return f;
@@ -96,10 +98,9 @@ public class FRAG_Tag extends ListFragment implements OnItemLongClickListener {
         }
 */
 		Point point = new Point();
-		int x;
 
 		getActivity().getWindowManager().getDefaultDisplay().getSize(point);
-		switch (x = getActivity().getWindowManager().getDefaultDisplay().getRotation()) {
+		switch (getActivity().getWindowManager().getDefaultDisplay().getRotation()) {
 			case Surface.ROTATION_0:
 			case Surface.ROTATION_180:
 				isPhone = (point.x - point.y) < 0 ? true : false;
@@ -146,6 +147,8 @@ public class FRAG_Tag extends ListFragment implements OnItemLongClickListener {
 				int numTags;
 				String tagId;
 
+				ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
+
 	    		public void run() {
 	    			setOrientationSensor(false);
 			    	tagList.clear();
@@ -156,6 +159,7 @@ public class FRAG_Tag extends ListFragment implements OnItemLongClickListener {
 						if(finalCmd.setCmd(CMD_Iso18k6cTagAccess.Action.StartInventory)) {
 							tagId = finalCmd.getTagId();
 							if(finalCmd.getTagNumber() > 0) {
+								tg.startTone(ToneGenerator.TONE_PROP_BEEP);
 								if(!tagList.contains(tagId))
 									tagList.add(tagId);
 //								finalCmd.setCmd(CMD_Iso18k6cTagAccess.Action.GetAllTags);
@@ -164,8 +168,9 @@ public class FRAG_Tag extends ListFragment implements OnItemLongClickListener {
 							for(numTags = finalCmd.getTagNumber(); numTags > 1; numTags--) {
 								if(finalCmd.setCmd(CMD_Iso18k6cTagAccess.Action.NextTag)) {
 									tagId = finalCmd.getTagId();
-									if(!tagList.contains(tagId))
+									if(!tagList.contains(tagId)){
 										tagList.add(tagId);
+									}
 								}
 							}
 							Collections.sort(tagList);

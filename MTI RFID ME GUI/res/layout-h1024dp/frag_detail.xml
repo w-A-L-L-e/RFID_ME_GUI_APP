@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:scrollbars="vertical" android:scrollbarStyle="insideOverlay">
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical" >
 
 	<ScrollView
 	    android:id="@+id/scrollView"
@@ -12,7 +14,7 @@
 	    <LinearLayout
 	        android:id="@+id/scrollLayout"
 	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
+	        android:layout_height="wrap_content"
 	        android:orientation="vertical" >
 
 	        <FrameLayout
@@ -65,9 +67,9 @@
 	                    android:id="@+id/et_epclength"
 	                    style="@style/EditTextFontLarge"
 	                    android:layout_weight="1"
-	                    android:hint="Enter EPC length between 1 to 27"
+	                    android:hint="@string/epc_length_hint"
 	                    android:maxLength="2"
-	                    android:numeric="integer" >
+	                    android:digits="true" >
 
 	                    <requestFocus />
 	                </EditText>
@@ -145,14 +147,117 @@
 	                    android:id="@+id/et_pwdnew"
 	                    style="@style/EditTextFontLarge"
 	                    android:layout_weight="1"
-	                    android:digits="0123456789abcdefABCDEF"
+	                    android:digits=" 0123456789abcdefABCDEF"
 	                    android:maxLength="8"
-	                    android:password="true" />
+	                    android:inputType="textPassword" />
 	            </LinearLayout>
 	        </LinearLayout>
 
 	        <View style="@style/dividerLine" />
+	        
+	        <LinearLayout
+	            android:id="@+id/tidLayout"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
 
+	            <LinearLayout
+	                android:id="@+id/tidTitleLayout"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal" >
+
+	                <TextView
+	                    android:id="@+id/tv_tidtitle"
+	                    style="@style/TextViewFontLarge.2wt"
+	                    android:text="@string/tid_title" />
+
+	                <Button
+	                    android:id="@+id/btn_tid_read"
+	                    style="@style/ButtonFontLarge"
+	                    android:text="@string/tid_read_submit" />
+
+	                <Button
+	                    android:id="@+id/btn_tid_write"
+	                    style="@style/ButtonFontLarge"
+	                    android:text="@string/tid_write_submit" />
+	                </LinearLayout>
+
+	            <LinearLayout
+	                android:id="@+id/tidDataLayout"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="vertical" >
+
+	                <TextView
+	                    android:id="@+id/tv_tiddata"
+	                    style="@style/TextViewFontLarge.1wt"
+	                    android:text="@string/tid_data" />
+	                
+	                <EditText
+	                    android:id="@+id/et_tiddata"
+	                    style="@style/EditTextFontLarge"
+	                    android:digits=" 0123456789abcdefABCDEF"
+	                    android:gravity="top|left"
+	                    android:singleLine="false" 
+	                    android:lines="2" />
+	            </LinearLayout>
+
+	        </LinearLayout>
+
+	        <View style="@style/dividerLine" />
+	        
+	        <LinearLayout
+	            android:id="@+id/userLayout"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+
+	            <LinearLayout
+	                android:id="@+id/userTitleLayout"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal" >
+
+	                <TextView
+	                    android:id="@+id/tv_usertitle"
+	                    style="@style/TextViewFontLarge.2wt"
+	                    android:text="@string/user_title" />
+
+	                <Button
+	                    android:id="@+id/btn_user_read"
+	                    style="@style/ButtonFontLarge"
+	                    android:text="@string/user_read_submit" />
+
+	                <Button
+	                    android:id="@+id/btn_user_write"
+	                    style="@style/ButtonFontLarge"
+	                    android:text="@string/user_write_submit" />
+	                </LinearLayout>
+
+	            <LinearLayout
+	                android:id="@+id/userDataLayout"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content" >
+
+	                <TextView
+	                    android:id="@+id/tv_userdata"
+	                    style="@style/TextViewFontLarge.1wt"
+	                    android:text="@string/user_data" />
+	                
+	                <EditText
+	                    android:id="@+id/et_userdata"
+	                    style="@style/EditTextFontLarge"
+	                    android:digits=" 0123456789abcdefABCDEF"
+	                    android:gravity="top|left"
+	                    android:singleLine="false" 
+	                    android:lines="2" />
+	            </LinearLayout>
+
+	        </LinearLayout>
+
+	        <View style="@style/dividerLine" />
+	        
 	        <LinearLayout
 	            android:id="@+id/lockLayout"
 	            android:layout_width="match_parent"
@@ -210,7 +315,7 @@
 	        </LinearLayout>
 
 	        <View style="@style/dividerLine" />
-
+	        
 	        <LinearLayout
 	            android:id="@+id/killLayout"
 	            android:layout_width="match_parent"
